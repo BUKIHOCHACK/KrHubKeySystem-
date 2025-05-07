@@ -1,83 +1,125 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: url(bg.jpg) no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-.wrapper {
-  width: 420px;
-  background: transparent;
-  border: 2px solid rgba(255, 255, 255, .2);
-  backdrop-filter: blur(9px);
-  color: #fff;
-  border-radius: 12px;
-  padding: 30px 40px;
-}
-.wrapper h1 {
-  font-size: 36px;
-  text-align: center;
-}
-.wrapper .input-box {
-  position: relative;
-  width: 100%;
-  height: 50px;
-  margin: 30px 0;
-}
-.input-box input {
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  border: none;
-  outline: none;
-  border: 2px solid rgba(255, 255, 255, .2);
-  border-radius: 40px;
-  font-size: 16px;
-  color: #fff;
-  padding: 20px 45px 20px 20px;
-}
-.input-box input::placeholder {
-  color: #fff;
-}
-.input-box i {
-  position: absolute;
-  right: 20px;
-  top: 30%;
-  transform: translate(-50%);
-  font-size: 20px;
-}
-.btn {
-  width: 100%;
-  height: 45px;
-  background: #fff;
-  border: none;
-  outline: none;
-  border-radius: 40px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
-  cursor: pointer;
-  font-size: 16px;
-  color: #333;
-  font-weight: 600;
-  margin-top: 20px;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KrHub Key System</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="wrapper">
+    <form id="keyForm" onsubmit="return false">
+      <h1 id="title">KrHub Key System</h1>
 
-/* Hiệu ứng trượt xuống */
-.fade-slide {
-  display: none;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.5s ease;
-}
-.fade-slide.show {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
-}
+      <div id="getKeySection">
+        <button type="button" class="btn" onclick="getLink()">Get Key (Linkvertise)</button>
+      </div>
+
+      <div class="input-box fade-slide" id="codeSection">
+        <input type="text" placeholder="Enter code here..." id="inputCode" required>
+        <i class='bx bx-key'></i>
+      </div>
+
+      <button type="button" class="btn fade-slide" id="verifyBtn" onclick="verifyCode()">Verify Code</button>
+
+      <div class="input-box fade-slide" id="keySection">
+        <input type="text" id="finalKey" readonly>
+        <i class='bx bx-check-shield'></i>
+      </div>
+
+      <button type="button" class="btn fade-slide" id="copyBtn" onclick="copyKey()">Copy Key</button>
+    </form>
+  </div>
+
+  <script>
+    const correctCode = "1234";
+    const keyValue = "KrHub1234@";
+    const keyExpireHours = 24;
+
+    function getLink() {
+      localStorage.setItem("krhub-passed", "true");
+      window.open("https://linkvertise.com/1347532/key-system?o=sharing", "_blank");
+
+      showCodeInput();
+    }
+
+    function showCodeInput() {
+      document.getElementById("codeSection").style.display = "block";
+      document.getElementById("verifyBtn").style.display = "inline-block";
+      setTimeout(() => {
+        document.getElementById("codeSection").classList.add("show");
+        document.getElementById("verifyBtn").classList.add("show");
+      }, 100);
+    }
+
+    function verifyCode() {
+      const input = document.getElementById("inputCode").value.trim();
+      if (input === correctCode) {
+        const now = new Date().getTime();
+        const expire = now + keyExpireHours * 60 * 60 * 1000;
+        localStorage.setItem("krhubKey", keyValue);
+        localStorage.setItem("krhubKeyExpire", expire);
+
+        document.getElementById("title").innerText = "Enjoy";
+        showKeyUI();
+      } else {
+        // Xoá và ẩn phần nhập mã nếu sai
+        document.getElementById("codeSection").classList.remove("show");
+        document.getElementById("verifyBtn").classList.remove("show");
+
+        setTimeout(() => {
+          document.getElementById("codeSection").style.display = "none";
+          document.getElementById("verifyBtn").style.display = "none";
+          document.getElementById("inputCode").value = "";
+
+          // Hiện lại sau 1 giây
+          setTimeout(() => {
+            showCodeInput();
+          }, 1000);
+        }, 300);
+      }
+    }
+
+    function showKeyUI() {
+      document.getElementById("getKeySection").style.display = "none";
+      document.getElementById("verifyBtn").style.display = "none";
+      document.getElementById("codeSection").style.display = "none";
+
+      document.getElementById("finalKey").value = keyValue;
+      document.getElementById("keySection").style.display = "block";
+      document.getElementById("copyBtn").style.display = "inline-block";
+
+      setTimeout(() => {
+        document.getElementById("keySection").classList.add("show");
+        document.getElementById("copyBtn").classList.add("show");
+      }, 100);
+    }
+
+    function copyKey() {
+      const key = document.getElementById("finalKey").value;
+      navigator.clipboard.writeText(key);
+      const copyBtn = document.getElementById("copyBtn");
+      copyBtn.innerText = "Copied";
+      setTimeout(() => {
+        copyBtn.innerText = "Copy Key";
+      }, 2000);
+    }
+
+    // Auto check on load
+    window.onload = () => {
+      const key = localStorage.getItem("krhubKey");
+      const expire = localStorage.getItem("krhubKeyExpire");
+      const now = new Date().getTime();
+
+      if (key && expire && now < parseInt(expire)) {
+        document.getElementById("title").innerText = "Enjoy";
+        showKeyUI();
+      } else {
+        localStorage.removeItem("krhubKey");
+        localStorage.removeItem("krhubKeyExpire");
+      }
+    };
+  </script>
+</body>
+  </html>
