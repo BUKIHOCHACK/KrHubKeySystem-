@@ -2,53 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KrHub Key System</title>
-  <style>
-    body { font-family: Arial; text-align: center; margin-top: 50px; }
-    .key-box, #copyBtn { display: none; margin-top: 20px; }
-    button { padding: 10px 20px; font-size: 16px; }
-  </style>
+  <link rel="stylesheet" href="styles.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-  <h1>KrHub Key System</h1>
-  <p>Pls getkey before using script!</p></p>
+  <div class="wrapper">
+    <form id="keyForm" onsubmit="return false">
+      <h1>KrHub Key System</h1>
 
-  <!-- Bước 1: Nút vượt link -->
-  <button onclick="openLink()">GetKey</button>
+      <div id="getKeySection">
+        <button type="button" class="btn" onclick="getLink()">GetKey (Linkvertise)</button>
+      </div>
 
-  <!-- Bước 2: Hiển thị key sau khi xác nhận -->
-  <div class="key-box" id="keyBox">Your Keys: <span id="showKey"></span></div>
-  <button id="copyBtn" onclick="copyKey()">Copy Key</button>
+      <div class="input-box" id="codeSection" style="display:none;">
+        <input type="text" placeholder="Enter code here..." id="inputCode" required>
+        <i class='bx bx-key'></i>
+      </div>
+
+      <button type="button" class="btn" id="verifyBtn" onclick="verifyCode()" style="display:none;">Verify Code</button>
+
+      <div class="input-box" id="keySection" style="display:none;">
+        <input type="text" id="finalKey" readonly>
+        <i class='bx bx-check-shield'></i>
+      </div>
+
+      <button type="button" class="btn" id="copyBtn" onclick="copyKey()" style="display:none;">Copy Key</button>
+    </form>
+  </div>
 
   <script>
-    function openLink() {
-      // Chuyển đến Linkvertise, đồng thời đánh dấu đã vượt
-      localStorage.setItem("passedLink", "true");
-      window.open("https://link-target.net/1347532/krhub-key-system-v2", "_blank");
+    const correctCode = "WJKQA"; // Mã bạn tự đổi thủ công để xác thực
+    const keyValue = "KrHub1234@"; // Key có hiệu lực 24h
+
+    function getLink() {
+      localStorage.setItem("krhub-passed", "true");
+      window.open("https://linkvertise.com/1347532/key-system?o=sharing", "_blank");
+      document.getElementById("codeSection").style.display = "block";
+      document.getElementById("verifyBtn").style.display = "inline-block";
     }
 
-    function generateKey() {
-      const rand = Math.random().toString(36).substring(2, 10);
-      return "KrHub" + "1234" + "@";
+    function verifyCode() {
+      const input = document.getElementById("inputCode").value.trim();
+      if (input === correctCode) {
+        document.getElementById("getKeySection").style.display = "none";
+        document.getElementById("verifyBtn").style.display = "none";
+        document.getElementById("codeSection").style.display = "none";
+        document.getElementById("keySection").style.display = "block";
+        document.getElementById("finalKey").value = keyValue;
+        document.getElementById("copyBtn").style.display = "inline-block";
+      } else {
+        alert("Invalid code!");
+      }
     }
 
     function copyKey() {
-      const key = document.getElementById("showKey").textContent;
+      const key = document.getElementById("finalKey").value;
       navigator.clipboard.writeText(key);
-      alert("Copy key: " + key);
-    }
-
-    // Kiểm tra nếu đã vượt link
-    const passed = localStorage.getItem("passedLink");
-    if (passed === "true") {
-      let savedKey = localStorage.getItem("krhubKey");
-      if (!savedKey) {
-        savedKey = generateKey();
-        localStorage.setItem("krhubKey", savedKey);
-      }
-      document.getElementById("showKey").textContent = savedKey;
-      document.getElementById("keyBox").style.display = "block";
-      document.getElementById("copyBtn").style.display = "inline-block";
+      document.getElementById("copyBtn").innerText = "Đã Copy";
     }
   </script>
 </body>
