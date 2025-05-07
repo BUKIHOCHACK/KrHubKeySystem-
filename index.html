@@ -1,67 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KrHub Key System</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-</head>
-<body>
-  <div class="wrapper">
-    <form id="keyForm" onsubmit="return false">
-      <h1>KrHub Key System</h1>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: url(bg.jpg) no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.wrapper {
+  width: 420px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, .2);
+  backdrop-filter: blur(9px);
+  color: #fff;
+  border-radius: 12px;
+  padding: 30px 40px;
+}
+.wrapper h1 {
+  font-size: 36px;
+  text-align: center;
+}
+.wrapper .input-box {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin: 30px 0;
+}
+.input-box input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, .2);
+  border-radius: 40px;
+  font-size: 16px;
+  color: #fff;
+  padding: 20px 45px 20px 20px;
+}
+.input-box input::placeholder {
+  color: #fff;
+}
+.input-box i {
+  position: absolute;
+  right: 20px;
+  top: 30%;
+  transform: translate(-50%);
+  font-size: 20px;
+}
+.btn {
+  width: 100%;
+  height: 45px;
+  background: #fff;
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+  margin-top: 20px;
+}
 
-      <div id="getKeySection">
-        <button type="button" class="btn" onclick="getLink()">GetKey (Linkvertise)</button>
-      </div>
-
-      <div class="input-box" id="codeSection" style="display:none;">
-        <input type="text" placeholder="Enter code here..." id="inputCode" required>
-        <i class='bx bx-key'></i>
-      </div>
-
-      <button type="button" class="btn" id="verifyBtn" onclick="verifyCode()" style="display:none;">Verify Code</button>
-
-      <div class="input-box" id="keySection" style="display:none;">
-        <input type="text" id="finalKey" readonly>
-        <i class='bx bx-check-shield'></i>
-      </div>
-
-      <button type="button" class="btn" id="copyBtn" onclick="copyKey()" style="display:none;">Copy Key</button>
-    </form>
-  </div>
-
-  <script>
-    const correctCode = "WJKQA"; // Mã bạn tự đổi thủ công để xác thực
-    const keyValue = "KrHub1234@"; // Key có hiệu lực 24h
-
-    function getLink() {
-      localStorage.setItem("krhub-passed", "true");
-      window.open("https://linkvertise.com/1347532/key-system?o=sharing", "_blank");
-      document.getElementById("codeSection").style.display = "block";
-      document.getElementById("verifyBtn").style.display = "inline-block";
-    }
-
-    function verifyCode() {
-      const input = document.getElementById("inputCode").value.trim();
-      if (input === correctCode) {
-        document.getElementById("getKeySection").style.display = "none";
-        document.getElementById("verifyBtn").style.display = "none";
-        document.getElementById("codeSection").style.display = "none";
-        document.getElementById("keySection").style.display = "block";
-        document.getElementById("finalKey").value = keyValue;
-        document.getElementById("copyBtn").style.display = "inline-block";
-      } else {
-        alert("Invalid code!");
-      }
-    }
-
-    function copyKey() {
-      const key = document.getElementById("finalKey").value;
-      navigator.clipboard.writeText(key);
-      document.getElementById("copyBtn").innerText = "Đã Copy";
-    }
-  </script>
-</body>
-</html>
+/* Hiệu ứng trượt xuống */
+.fade-slide {
+  display: none;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.5s ease;
+}
+.fade-slide.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
