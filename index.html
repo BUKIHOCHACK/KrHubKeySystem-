@@ -2,63 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Key System - KrHub</title>
+  <title>KrHub Key System</title>
   <style>
     body { font-family: Arial; text-align: center; margin-top: 50px; }
-    .key-box { font-size: 20px; margin: 20px; }
+    .key-box, #copyBtn { display: none; margin-top: 20px; }
+    button { padding: 10px 20px; font-size: 16px; }
   </style>
 </head>
 <body>
   <h1>KrHub Key System</h1>
-  <p>Get Key System for 24h 24h:</p>
-  <a href="https://linkvertise.com/1347532/key-system?o=sharing" target="_blank">
-    <button> Get key with Linkvertise</button>
-  </a>
+  <p>Vui lòng vượt Linkvertise để nhận key.</p>
 
-  <div class="key-box" id="keyBox"></div>
-  <div id="timeLeft"></div>
+  <!-- Bước 1: Nút vượt link -->
+  <button onclick="openLink()">Vượt Link GetKey</button>
+
+  <!-- Bước 2: Hiển thị key sau khi xác nhận -->
+  <div class="key-box" id="keyBox">Key của bạn: <span id="showKey"></span></div>
+  <button id="copyBtn" onclick="copyKey()">Copy Key</button>
 
   <script>
+    function openLink() {
+      // Chuyển đến Linkvertise, đồng thời đánh dấu đã vượt
+      localStorage.setItem("passedLink", "true");
+      window.open("https://linkvertise.com/1347532/key-system?o=sharing", "_blank");
+    }
+
     function generateKey() {
-      const rand = Math.random().toString(36).slice(2, 10); // Random chuỗi
+      const rand = Math.random().toString(36).substring(2, 10);
       return "KrHub" + rand + "@";
     }
 
-    function startTimer(expireTime) {
-      const timer = setInterval(() => {
-        const now = Date.now();
-        const distance = expireTime - now;
-        if (distance < 0) {
-          clearInterval(timer);
-          localStorage.removeItem("krhubKey");
-          localStorage.removeItem("keyExpire");
-          document.getElementById("keyBox").innerText = "Key đã hết hạn.";
-          document.getElementById("timeLeft").innerText = "";
-          return;
-        }
-        const hours = Math.floor(distance / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        document.getElementById("timeLeft").innerText = 
-          `Còn lại: ${hours}h ${minutes}m ${seconds}s`;
-      }, 1000);
+    function copyKey() {
+      const key = document.getElementById("showKey").textContent;
+      navigator.clipboard.writeText(key);
+      alert("Đã copy key: " + key);
     }
 
-    // Kiểm tra key đã tồn tại trong LocalStorage
-    let savedKey = localStorage.getItem("krhubKey");
-    let expireTime = localStorage.getItem("keyExpire");
-
-    if (!savedKey || !expireTime || Date.now() > expireTime) {
-      const newKey = generateKey();
-      const expire = Date.now() + 24 * 60 * 60 * 1000; // 24 giờ
-      localStorage.setItem("krhubKey", newKey);
-      localStorage.setItem("keyExpire", expire);
-      savedKey = newKey;
-      expireTime = expire;
+    // Kiểm tra nếu đã vượt link
+    const passed = localStorage.getItem("passedLink");
+    if (passed === "true") {
+      let savedKey = localStorage.getItem("krhubKey");
+      if (!savedKey) {
+        savedKey = generateKey();
+        localStorage.setItem("krhubKey", savedKey);
+      }
+      document.getElementById("showKey").textContent = savedKey;
+      document.getElementById("keyBox").style.display = "block";
+      document.getElementById("copyBtn").style.display = "inline-block";
     }
-
-    document.getElementById("keyBox").innerText = "Key của bạn: " + savedKey;
-    startTimer(expireTime);
   </script>
 </body>
 </html>
