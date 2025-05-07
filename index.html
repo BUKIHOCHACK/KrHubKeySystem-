@@ -11,20 +11,20 @@
 </head>
 <body>
   <h1>KrHub Key System</h1>
-  <p>Vui lòng vượt Linkvertise để nhận key.</p>
+  <p>Pls getkey before using script!</p></p>
 
   <!-- Bước 1: Nút vượt link -->
-  <button onclick="openLink()">Vượt Link GetKey</button>
+  <button onclick="openLink()">GetKey</button>
 
   <!-- Bước 2: Hiển thị key sau khi xác nhận -->
-  <div class="key-box" id="keyBox">Key của bạn: <span id="showKey"></span></div>
+  <div class="key-box" id="keyBox">Your Keys: <span id="showKey"></span></div>
   <button id="copyBtn" onclick="copyKey()">Copy Key</button>
 
   <script>
     function openLink() {
       // Chuyển đến Linkvertise, đồng thời đánh dấu đã vượt
       localStorage.setItem("passedLink", "true");
-      window.open("https://linkvertise.com/1347532/key-system?o=sharing", "_blank");
+      window.open("https://link-target.net/1347532/krhub-key-system-v2", "_blank");
     }
 
     function generateKey() {
