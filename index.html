@@ -13,13 +13,16 @@
   <h1>KrHub Key System</h1>
   <p>Pls getkey before using script!</p></p>
 
+  <!-- Bước 1: Nút vượt link -->
   <button onclick="openLink()">GetKey</button>
 
+  <!-- Bước 2: Hiển thị key sau khi xác nhận -->
   <div class="key-box" id="keyBox">Your Keys: <span id="showKey"></span></div>
   <button id="copyBtn" onclick="copyKey()">Copy Key</button>
 
   <script>
     function openLink() {
+      // Chuyển đến Linkvertise, đồng thời đánh dấu đã vượt
       localStorage.setItem("passedLink", "true");
       window.open("https://link-target.net/1347532/krhub-key-system-v2", "_blank");
     }
@@ -35,6 +38,7 @@
       alert("Copy key: " + key);
     }
 
+    // Kiểm tra nếu đã vượt link
     const passed = localStorage.getItem("passedLink");
     if (passed === "true") {
       let savedKey = localStorage.getItem("krhubKey");
