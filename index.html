@@ -1,55 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>KrHub Key System</title>
-  <style>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;KrHub Key System&lt;/title&gt;
+  &lt;style&gt;
     body { font-family: Arial; text-align: center; margin-top: 50px; }
     .key-box, #copyBtn { display: none; margin-top: 20px; }
     button { padding: 10px 20px; font-size: 16px; }
-  </style>
-</head>
-<body>
-  <h1>KrHub Key System</h1>
-  <p>Pls getkey before using script!</p></p>
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;KrHub Key System&lt;/h1&gt;
+  &lt;p&gt;Pls getkey before using script!&lt;/p&gt;&lt;/p&gt;
 
-  <!-- Bước 1: Nút vượt link -->
-  <button onclick="openLink()">GetKey</button>
+  &lt;!-- Bước 1: Nút vượt link --&gt;
+  &lt;button onclick=&quot;openLink()&quot;&gt;GetKey&lt;/button&gt;
 
-  <!-- Bước 2: Hiển thị key sau khi xác nhận -->
-  <div class="key-box" id="keyBox">Your Keys: <span id="showKey"></span></div>
-  <button id="copyBtn" onclick="copyKey()">Copy Key</button>
+  &lt;!-- Bước 2: Hiển thị key sau khi xác nhận --&gt;
+  &lt;div class=&quot;key-box&quot; id=&quot;keyBox&quot;&gt;Your Keys: &lt;span id=&quot;showKey&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+  &lt;button id=&quot;copyBtn&quot; onclick=&quot;copyKey()&quot;&gt;Copy Key&lt;/button&gt;
 
-  <script>
+  &lt;script&gt;
     function openLink() {
       // Chuyển đến Linkvertise, đồng thời đánh dấu đã vượt
-      localStorage.setItem("passedLink", "true");
-      window.open("https://link-target.net/1347532/krhub-key-system-v2", "_blank");
+      localStorage.setItem(&quot;passedLink&quot;, &quot;true&quot;);
+      window.open(&quot;https://link-target.net/1347532/krhub-key-system-v2&quot;, &quot;_blank&quot;);
     }
 
     function generateKey() {
       const rand = Math.random().toString(36).substring(2, 10);
-      return "KrHub" + "1234" + "@";
+      return &quot;KrHub&quot; + &quot;1234&quot; + &quot;@&quot;;
     }
 
     function copyKey() {
-      const key = document.getElementById("showKey").textContent;
+      const key = document.getElementById(&quot;showKey&quot;).textContent;
       navigator.clipboard.writeText(key);
-      alert("Copy key: " + key);
+      alert(&quot;Copy key: &quot; + key);
     }
 
     // Kiểm tra nếu đã vượt link
-    const passed = localStorage.getItem("passedLink");
-    if (passed === "true") {
-      let savedKey = localStorage.getItem("krhubKey");
+    const passed = localStorage.getItem(&quot;passedLink&quot;);
+    if (passed === &quot;true&quot;) {
+      let savedKey = localStorage.getItem(&quot;krhubKey&quot;);
       if (!savedKey) {
         savedKey = generateKey();
-        localStorage.setItem("krhubKey", savedKey);
+        localStorage.setItem(&quot;krhubKey&quot;, savedKey);
       }
-      document.getElementById("showKey").textContent = savedKey;
-      document.getElementById("keyBox").style.display = "block";
-      document.getElementById("copyBtn").style.display = "inline-block";
+      document.getElementById(&quot;showKey&quot;).textContent = savedKey;
+      document.getElementById(&quot;keyBox&quot;).style.display = &quot;block&quot;;
+      document.getElementById(&quot;copyBtn&quot;).style.display = &quot;inline-block&quot;;
     }
-  </script>
-</body>
-</html>
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
